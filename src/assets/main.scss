@@ -1,0 +1,122 @@
+@import "~bootstrap/scss/bootstrap";
+
+$codeFontFamily: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+
+.code-wrap {
+  position: relative;
+  border: 1px solid #eee;
+  overflow: hidden;
+  margin-top: 1rem;
+
+  .code-right-pane {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    z-index: 100;
+    max-width: percentage(1 - 0.618);
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    & > * {
+      margin-bottom: .5rem;
+    }
+
+    .code-right-pane-controls {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: flex-end;
+
+      & > * {
+        margin-left: 0.5rem;
+      }
+
+      button {
+        cursor: pointer;
+
+        &.btn-light {
+          border: 1px solid rgba(0, 0, 0, 0.125);
+        }
+      }
+    }
+  }
+
+  .toast-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 100;
+    margin: auto;
+    width: 20rem;
+
+    & > div {
+      margin-top: .5rem;
+    }
+  }
+}
+
+.CodeMirror {
+  $exerciseBackgroundColor: transparentize(#E1BEE7, 0.5);
+  $assertBackgroundColor: transparentize(#FFCDD2, 0.5);
+
+  font-family: $codeFontFamily;
+
+  .CodeMirror-cursor {
+    border-left: 2px solid transparentize(#546E7A, 0.25) !important;
+  }
+
+  .cursor-show {
+    visibility: visible !important;
+  }
+
+  .cursor-hide {
+    visibility: hidden !important;
+  }
+
+  .exercise-block {
+    padding: .15em 0;
+    border-radius: .1em;
+    background-color: $exerciseBackgroundColor;
+    cursor: pointer;
+  }
+
+  .assert-block {
+    padding: .15em 0;
+    border-radius: 0;
+    background-color: $assertBackgroundColor;
+    cursor: pointer;
+  }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+
+  & > * {
+    margin: 0 0.25rem;
+
+    &:first-child, &:last-child {
+      margin: 0;
+    }
+  }
+
+  button {
+    width: 2.5em;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .slider {
+    flex: auto;
+  }
+
+  .ts-display {
+    width: 5rem;
+    text-align: center;
+    font-size: 0.7rem;
+  }
+}

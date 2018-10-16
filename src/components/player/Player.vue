@@ -1,0 +1,126 @@
+<template>
+  <div id="player">
+    <div>
+      <span class="elicast-title">{{ elicastTitle }}</span>
+    </div>
+
+    <div class="code-wrap">
+      <codemirror ref="cm"
+                  v-model="code"
+                  :class="{ 'solve-exercise': playMode === PlayMode.SOLVE_EXERCISE }"
+                  :options="editorOptions"
+                  @beforeChange="handleEditorBeforeChange"
+                  @change="handleEditorChange"
+                  @beforeSelectionChange="handleEditorBeforeSelectionChange"
+                  @cursorActivity="handleEditorCursorActivity">
+      </codemirror>
+
+      <div class="code-right-pane">
+        <div class="pause-controls code-right-pane-controls"
+             v-show="playMode === PlayMode.PAUSE">
+          <button class="run-code-button btn btn-sm btn-light"
+                 :disabled="!playModeReady"
+                 @click="runCode">
+            <font-awesome-icon icon="terminal" /> Run
+          </button>
+        </div>
+
+        <div class="solve-control code-right-pane-controls"
+             v-show="playMode === PlayMode.SOLVE_EXERCISE">
+          <button class="run-code-button btn btn-sm btn-primary"
+                :disabled="!playModeReady"
+                @click="runCode">
+            <font-awesome-icon icon="terminal" /> Run
+          </button>
+          <button class="check-answer-button btn btn-sm btn-success"
+                  :disabled="!playModeReady"
+                  @click="checkAnswer">
+            <font-awesome-icon icon="pencil" /> Check Answer
+          </button>
+          <button class="check-answer-button btn btn-sm btn-light"
+                  :disabled="!playModeReady"
+                  @click="skipExercise">
+            <font-awesome-icon icon="forward" /> Skip Exercise
+          </button>
+        </div>
+
+        <RunOutputView :output="runOutput"></RunOutputView>
+      </div>
+
+      <Toast ref="toast" class="toast-wrap"></Toast>
+    </div>
+
+    <div class="controls">
+      <button ref="controlButton"
+              class="btn btn-sm btn-light"
+              @click="togglePlayMode"
+              :disabled="playMode === PlayMode.SOLVE_EXERCISE || !playModeReady">
+        <font-awesome-icon v-show="playMode === PlayMode.PAUSE && ts !== maxTs" icon="play" />
+        <font-awesome-icon v-show="playMode === PlayMode.PLAYBACK" icon="pause" />
+        <font-awesome-icon v-show="playMode === PlayMode.SOLVE_EXERCISE" icon="pause" />
+        <font-awesome-icon v-show="playMode === PlayMode.PAUSE && ts === maxTs" icon="repeat" />
+      </button>
+
+      <Slider ref="slider"
+              class="slider"
+              @change="handleSliderChange"
+              :max="maxTs"
+              :disabled="!playModeReady"
+              :overlays="sliderOverlays"></Slider>
+
+      <div class="ts-display text-secondary">
+        {{ tsDisplay }}
+      </div>
+    </div>
+  </div>
+</template>
+
+<script src="./Player.js"></script>
+
+<style lang="scss">
+
+.elicast-title {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  box-shadow: none;
+  display: inline-block;
+  font-size: 2rem;
+  width: 100%;
+}
+
+.CodeMirror {
+  $readonlyBackgroundColor: rgba(0, 0, 0, 0.066);
+  $solveExerciseBackgroundColor: rgba(255, 255, 255, 0.7);
+
+  .solve-exercise ~ & {
+    background-color: $readonlyBackgroundColor;
+  }
+
+  .solve-exercise-block {
+    padding: .2em 0;
+    border-radius: .2em;
+    background-color: $solveExerciseBackgroundColor;
+  }
+
+  .solve-exercise-placeholder {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+
+    display: inline-block;
+    color: gray;
+    background-color: $solveExerciseBackgroundColor;
+  }
+}
+
+</style>
