@@ -65,10 +65,11 @@ const EDITOR_OPTIONS = {
   tabSize: 4,
   extraKeys: {
     'Tab': function (cm) {
-      if (cm.somethingSelected())
+      if (cm.somethingSelected()) {
         cm.indentSelection('add')
-      else
+      } else {
         cm.execCommand('insertSoftTab')
+      }
     },
     'Shift-Tab': function (cm) {
       cm.indentSelection('subtract')
@@ -239,7 +240,7 @@ export default {
         }
       }
 
-      //only draw OTArea during timeline selection
+      // only draw OTArea during timeline selection
       shouldRedrawOTArea = shouldRedrawOTArea && this.playMode === PlayMode.TIMELINE_SELECT
 
       // if playMode is not playback, always redraw when ts changes
@@ -373,14 +374,14 @@ export default {
             } else if (resolveOts.length > 0) {
               // cancel latest resolve
               this.logger.submit('resolve-undo', {
-                'id': this.elicastId,
+                'id': this.elicastId
               })
 
               resolveOts.pop()
             } else {
               // cancel whole record (revert direct changes on CodeMirror during the recording)
               this.logger.submit('resolve-cancel', {
-                'id': this.elicastId,
+                'id': this.elicastId
               })
 
               const lastExecutedOtIdx = _.findLastIndex(this.ots, ot => ot.ts <= recordEndTs)

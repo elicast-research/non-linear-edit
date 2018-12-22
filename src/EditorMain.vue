@@ -21,14 +21,11 @@
 import _ from 'lodash'
 
 import Elicast from '@/elicast/elicast'
-// import { ElicastSelection } from '@/elicast/elicast-ot-set'
 import ElicastService from '@/elicast/elicast-service'
 import ElicastEditor from '@/components/editor'
 import LoadSaveModal from '@/components/LoadSaveModal'
 
-const INIT_ELICAST = new Elicast(null, 'Unnamed screencast', [
-  // new ElicastSelection(0, 0, 0)
-], null)
+const INIT_ELICAST = new Elicast(null, 'Unnamed screencast', [], null)
 
 export default {
   components: {
